@@ -1,13 +1,14 @@
 <template>
   <div>
     <Header></Header>
-    <Footer></Footer>
+    <router-view></router-view>
+    <Footer v-show="$route.meta.show" ></Footer>
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header/indexHeader";
-import Footer from "@/components/Footer/indexFooter";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer";
 export default {
   components: {
     Header,
