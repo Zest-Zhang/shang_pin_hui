@@ -45,18 +45,25 @@
 
 <script>
 export default {
-  data(){
-    return{
-    keyword: ''}
-  },
-  methods:{
-    goSearch(){
-      this.$router.push({
-        name:'search',
-        params:{ keyword:this.keyword },
-        query:{ k:this.keyword.toUpperCase() } })
+  data() {
+    return {
+      keyword: ''
     }
-  }
+  },
+  methods: {
+    goSearch() {
+      let loction = {
+        name: "search",
+        params: { keyword: this.keyword || undefined}
+      };
+      // 这行代码的作用是点击 TypeNav 再点击搜索按钮后，params 和 query 参数会合并在一起
+      if (this.$route.query) {
+        // undefined 的作用是允许搜索按钮搜索的内容为空，不加 undefined 搜索空内容会报错
+        loction.query = this.$route.query;
+      }
+      this.$router.push(loction);
+    }
+  },
 }
 </script>
 
