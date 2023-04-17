@@ -3,9 +3,10 @@
     <div class="type-nav">
       <div class="container">
         <div @mouseleave = "leaveShow">
-        <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-        <div class="all-sort-list2" @click = "goSearch">
+        <h2 class="all" @mouseenter = "enterShow">全部商品分类</h2>
+        <transition name="sort">
+            <div class="sort" v-show="show">
+            <div class="all-sort-list2" @click = "goSearch">
             <div
                 class="item bo"
                 v-for="(c1,index) in categoryList" :key="c1.categoryId"
@@ -49,7 +50,8 @@
               </div>
             </div>
           </div>
-        </div>
+            </div>
+        </transition>
         </div>
         <nav class="nav">
           <a href="#">服装城</a>
@@ -72,11 +74,24 @@ import throttle from "lodash/throttle"
 
 export default {
   name:'TypeNav',
-  data(){ return {currentIndex: -1} },
+  data(){
+    return {
+      currentIndex: -1,
+      show: true
+    }
+  },
   methods: {
     changeIndex: throttle( function(index){
       this.currentIndex = index },50),
-    leaveShow(){ this.currentIndex = -1 },
+    leaveShow(){
+      if( this.$route.path !== '/home'){
+        this.currentIndex = -1;
+        this.show = false
+      }
+      if (this.$route.path === "/home") {
+        this.currentIndex = -1;
+      }
+    },
     goSearch(event) {
       let element = event.target;
       // event.target 有一个 dataset 属性，可以获取到节点的自定义属性和属性值
@@ -107,10 +122,15 @@ export default {
         this.$router.push(location);
       }
     },
+    enterShow(){ this.show = true }
 },
-  mounted(){ this.$store.dispatch('getCategoryList') },
-  computed:{...mapState({
-  categoryList: state => state.home.categoryList })
+  mounted(){
+    if(this.$route.path!=='/home'){ this.show = false }
+  },
+  computed:{
+    ...mapState({
+      categoryList: state => state.home.categoryList
+    })
   }
 }
 </script>
@@ -150,6 +170,17 @@ export default {
   position: absolute;
   background: #fafafa;
   z-index: 999;
+}
+
+/* 过渡动画:商品分类 进入阶段 */
+.type-nav .container .sort-enter {
+  height: 0;
+}
+.type-nav .container .sort-enter-active {
+  transition: all 0.3s;
+}
+.type-nav .container .sort-enter-to {
+  height: 461px;
 }
 .type-nav .container .sort .all-sort-list2 .cur{
   background: skyblue
