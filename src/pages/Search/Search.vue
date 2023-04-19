@@ -11,38 +11,58 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 商品名字面包屑 -->
+            <li class="with-x" v-show="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">×</i>
+            </li>
+            <!-- 关键字面包屑 -->
+            <li class="with-x" v-show="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
+            <!-- 品牌面包屑 -->
+            <li class="with-x" v-if="searchParams.trademark">
+              {{searchParams.trademark.split("：")[1]}}
+              <i @click="removeTradeMark" >x</i> </li>
+            <!-- 平台售卖属性面包屑 -->
+            <li
+                class="with-x"
+                v-for="(attrValue,index) in searchParams.props "
+                :key="index"
+            >{{ attrValue.split("：")[1] }}<i @click="removeAttr(index)" >x</i> </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector
+            @trademarkInfo = "trademarkInfo"
+            @attrInfo="attrInfo"
+        />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li
+                    :class="{ active: isOne }"
+                    @click="changeOrder('1')"
+                ><a>综合
+                    <span
+                        v-show="isOne"
+                        class="iconfont"
+                        :class="{ 'icon-jiantou_xiangxia': isDesc, 'icon-jiantou_xiangshang': isAsc }"
+                    ></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li
+                    :class="{ active: isTwo }"
+                    @click="changeOrder('2')"
+                ><a>价格
+                    <span
+                        v-show="isTwo"
+                        class="iconfont"
+                        :class="{ 'icon-jiantou_xiangxia': isDesc, 'icon-jiantou_xiangshang': isAsc }"
+                    ></span></a>
                 </li>
               </ul>
             </div>
@@ -77,35 +97,14 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <!-- 分页器  -->
+          <Pagination
+              :pageNo="searchParams.pageNo"
+              :pageSize="searchParams.pageSize"
+              :total="total"
+              :continues="5"
+              @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -114,60 +113,135 @@
 
 <script>
   import { mapGetters}	from 'vuex'
-  // import SearchSelector from './SearchSelector/SearchSelector'
+  import { mapState } from "vuex";
+  import SearchSelector from './SearchSelector/SearchSelector'
   export default {
     name: 'Search',
-  //   components: {
-  //     SearchSelector
-  //   },
-  //   computed:{ ...mapGetters( ['goodsList'] )  },
-  //   methods:{
-  //     getData(){
-  //       this.$store.dispatch('getSearchList', {} )
-  //     }
-  //   },
-  //   beforeMount(){
-  //     Object.assign(
-  //         this.searchParams,
-  //         this.$route.query,
-  //         this.$route.params )
-  //   },
-  //   mounted(){
-  //     this.getData()
-  //   },
-  //   data(){
-  //     return{
-  //       searchParams: {
-  //         "category1Id": "",
-  //         "category2Id": "",
-  //         "category3Id": "",
-  //         "categoryName": "",
-  //         "keyword": "",
-  //     //排序
-  //     "order": "",
-  //     //分页器用的，代表的是当前第几页
-  //     "pageNo": 1,
-  //     //每一个展示数据个数
-  //     "pageSize": 3,
-  //     //平台售卖属性带的参数
-  //     "props": [],
-  //     //品牌
-  //     "trademark": ""}
-  // }
-  //   },
-  //   watch:{
-  //     $route(newValue,oldValue){
-  //       Object.assign( this.searchParams, this.$route.query, this.$route.params )
-  //       this.getData()
-  //       //点击TypeNav下的手机，categoryName是手机，id是3id，
-  //       // 再点击家用电器，categoryName是家用电器，id是1id，
-  //       // 但是，手机的3id并没有消失，正常需要清空，
-  //       // 所以每一次请求完毕，应该把相应的1，2，3级分类的id清空，让它接受下一次的相应1，2，3id
-  //       this.searchParams.category1Id = ''
-  //       this.searchParams.category2Id = ''
-  //       this.searchParams.category3Id = ''
-  //     }
-  //   },
+    components: {
+      SearchSelector
+    },
+    computed:{
+      ...mapGetters( ['goodsList'] ),
+      // !=的意思是 order 是默认排序
+      isOne(){ return this.searchParams.order.indexOf('1')!==-1},
+      isTwo(){ return this.searchParams.order.indexOf('2')!==-1 },
+      isAsc(){ return this.searchParams.order.indexOf('asc')!==-1 },
+      isDesc(){ return this.searchParams.order.indexOf('desc')!==-1 },
+      ...mapState({ total: state=>state.search.searchList.total })
+    },
+    methods: {
+      getData() {
+        this.$store.dispatch('getSearchList', this.searchParams)
+      },
+      // 这里把带给服务器的参数置空了后重新给服务器发了请求
+      removeCategoryName() {
+        this.searchParams.categoryName = ''
+        this.searchParams.category1Id = ''
+        this.searchParams.category2Id = ''
+        this.searchParams.category3Id = ''
+        this.getData()
+//本意是删除query，如果路径当中出现params不应该删除，路由跳转的时候应该带着
+        if (this.$route.params) {
+          this.$router.push({name: "search", params: this.$route.params})
+        }
+      },
+      removeKeyword() {
+        this.searchParams.keyword = '';
+        this.getData()
+        // 点击搜索 keyword 的面包屑上的 x 去掉地址栏的 params(同时不让 query 参数消失)
+        if (this.$route.query) {
+          this.$router.push({name: "search", query: this.$route.query});
+        }
+        this.$bus.$emit("clear")
+      },
+      trademarkInfo(trademark){
+        //整理品牌字段的参数
+        this.searchParams.trademark = `${ trademark .tmId } ： ${ trademark .tmName }`
+        //再次发请求获取search模块列表数据进行展示
+        this.getData() },
+      removeTradeMark(){
+        this.searchParams.trademark='';
+        this.getData()
+      },
+      attrInfo(attr,attrValue){
+        let props = `${ attr.attrId } ： ${ attrValue } ： ${ attr.attrName }`;
+        // 下面代码的作用是避免多次点击出现多个相同面包屑
+        /* if(this.searchParams.props.indexOf(props)...的作用是判断：
+        props在不在this.searchParams.props里面，如果没有，再往数组里面加 */
+        if( this.searchParams.props.indexOf(props) === -1 ) {
+          this.searchParams.props.push(props)
+        }
+        this.getData()
+      },
+      removeAttr( index ){
+        this.searchParams.props.splice(index,1)
+        this.getData()
+      },
+      // flag用于区分是综合(0)还是价格(1)
+      changeOrder(flag){
+        let originFlag = this.searchParams.order.split("：")[0];
+        // 这里的...split("：")[1]是desc
+        let originSort = this.searchParams.order.split("：")[1];
+        // 新的 order 值
+        let 	newOrder = '';
+        // 如果点击的是综合
+        if(flag===originFlag){
+          newOrder = `${ originFlag }：${originSort=="desc"?"asc":"desc"}`
+        }else{
+        //如果点击的是价格，默认降序desc，加上2(价格)就是2：desc
+          newOrder = `${flag}：${'desc'}` };
+        //将新的order赋予searchParams
+        this.searchParams.order = newOrder;
+        this.getData()
+      },
+      getPageNo(pageNo){
+        //整理带给服务器参数
+        this.searchParams.pageNo = pageNo;
+        this.getData()
+      }
+    },
+    beforeMount(){
+      Object.assign(
+          this.searchParams,
+          this.$route.query,
+          this.$route.params )
+    },
+    mounted(){
+      this.getData()
+    },
+    data(){
+      return{
+        searchParams: {
+          "category1Id": "",
+          "category2Id": "",
+          "category3Id": "",
+          "categoryName": "",
+          "keyword": "",
+      //排序
+      "order": "1：desc",
+      //分页器用的，代表的是当前第几页
+      "pageNo": 1,
+      //每一个展示数据个数
+      "pageSize": 3,
+      //平台售卖属性带的参数
+      "props": [],
+      //品牌
+      "trademark": ""}
+  }
+    },
+    watch:{
+      $route(newValue,oldValue){
+        Object.assign( this.searchParams, this.$route.query, this.$route.params )
+        this.getData()
+        //点击TypeNav下的手机，categoryName是手机，id是3id，
+        // 再点击家用电器，categoryName是家用电器，id是1id，
+        // 但是，手机的3id并没有消失，正常需要清空，
+        // 所以每一次请求完毕，应该把相应的1，2，3级分类的id清空，让它接受下一次的相应1，2，3id
+        this.searchParams.category1Id = ''
+        this.searchParams.category2Id = ''
+        this.searchParams.category3Id = ''
+      }
+    },
   }
 </script>
 

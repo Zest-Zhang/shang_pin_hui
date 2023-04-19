@@ -50,6 +50,9 @@ export default {
       keyword: ''
     }
   },
+  mounted(){
+    this.$bus.$on("clear", ()=>{ this.keyword = '' } )
+  },
   methods: {
     goSearch() {
       let loction = {
