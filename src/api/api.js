@@ -5,3 +5,8 @@ export const reqGetCategoryList = ()=> requests.get('/product/getBaseCategoryLis
 export const reqGetBannerList = ()=>mockRequests.get('/banner')
 export const reqGetFloorList = ()=>mockRequests.get('/floor')
 export const reqGetSearchList = (params)=> requests({ url:'/list',method:"post",data: params })
+export const reqGetGoodsList = (skuId) => requests({url:`/item/${ skuId }`,method:"get"})
+
+
+
+
