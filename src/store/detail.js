@@ -20,6 +20,7 @@ const getters={
     //这里不加 ||{} 会报 undefined 的错误，因为 state.goodsList 初始状态是空对象
      categoryView(state){ return state.goodsList.categoryView || {} },
      skuInfo(state){ return state.goodsList.skuInfo || {} },
+     spuSaleAttrList(state){ return state.goodsList.spuSaleAttrList || {} },
 }
 
 export default {state,mutations,actions,getters}

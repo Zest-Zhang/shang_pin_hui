@@ -1,17 +1,52 @@
 <template>
   <div class="spec-preview">
-    <img src="../images/s1.png" />
-    <div class="event"></div>
+    <img :src="imgObj.imgUrl"  alt=""/>
+    <div class="event" @mousemove="handler"></div>
     <div class="big">
-      <img src="../images/s1.png" />
+      <img :src="imgObj.imgUrl"  alt="" ref="big"/>
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
 <script>
   export default {
     name: "Zoom",
+    props: ['skuImageList'],
+    computed: {
+      // 默认显示第一张图
+      imgObj() {
+        return this.skuImageList[this.currentIndex] || {};
+      }
+    },
+    mounted() {
+      this.$bus.$on('getIndex',
+          (index) => this.currentIndex = index)
+    },
+    data() {
+      return {currentIndex: 0}
+    },
+    methods: {
+      handler(event){
+        let mask=this.$refs.mask;
+        let big = this.$refs.big;
+        /* 这里的event.offsetX/event.offsetY是鼠标所在位置
+        mask.offsetWidth是遮罩层的宽度，mask.offsetHeight是遮罩层的高度    left是遮罩层的最左侧，top是遮罩层的最上边 */
+        let left = event.offsetX-mask.offsetWidth/2;
+        let top = event.offsetY -mask.offsetHeight/2;
+        //约束范围
+        if(left <=0) left = 0;
+        if(left >=mask.offsetWidth) left = mask.offsetWidth;
+        if(top<=0) top =0;
+        if(top>=mask.offsetHeight) top = mask.offsetHeight;
+        //修改元素的1eft|top属性值
+        mask.style.left = left+'px';
+        mask.style.top = top +'px';
+        //这里的-2根据style里.big下的img标签里的width：200%和height：200%得到
+        big.style.left =-2*left+'px';
+        big.style.top =-2*top +'px';
+      }
+  }
   }
 </script>
 
