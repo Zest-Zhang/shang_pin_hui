@@ -1,7 +1,9 @@
-import {reqGetGoodsList} from '@/api/api'
+import {reqGetGoodsList,reqAddOrUpdateShopCart,} from '@/api/api'
+import {getUUID} from "@/utils/uuid_token";
 
 const state = {
-    goodsList : {}
+    goodsList : {},
+    uuid_token: getUUID()
 }
 const mutations = {
     GOODSLIST(state,goodsList){
@@ -15,6 +17,15 @@ const actions= {
             commit("GOODSLIST", result.data)
         }
     },
+    async addOrUpdateShopCart({commit}, {skuId,skuNum} ) {
+        let result = await reqAddOrUpdateShopCart(skuId,skuNum)
+        // 判断加入购物车成功或失败
+        if(result.code === 200){
+            return "ok"
+        }else{
+            return Promise.reject(new Error('faile'))
+        }
+    }
 }
 const getters={
     //这里不加 ||{} 会报 undefined 的错误，因为 state.goodsList 初始状态是空对象

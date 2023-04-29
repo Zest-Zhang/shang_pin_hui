@@ -76,12 +76,16 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                    autocomplete="off"
+                    class="itxt"
+                    v-model="skuNum"
+                    @change="changeSkuNum">
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum>1?skuNum-- : skuNum=1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -353,8 +357,27 @@ export default {
       // 遍历售卖属性值为 0 就没有高亮了
       arr.forEach( item=>{ item.isChecked = 0 })
       // 点击的售卖属性值
-      saleAttrValue.isChecked = 1 }
-  }
+      saleAttrValue.isChecked = 1 },
+      // 这里的 event 可传可不传
+      changeSkuNum(event){
+        //这里 *1 的作用： 当用户输入的值不是纯数字时，把它变成 NaN
+        let value = event.target.value*1
+        if( isNaN(value) || value <1 ){
+          this.skuNum = 1
+        }else{ this.skuNum = parseInt(value) }
+      },
+      async addShopCar(){
+        //发请求：将产品加入到数据库(即通知服务器)，不需要返回数据，只需要告知是否成功即可，因此没有必要vuex三连环进行存储数据
+        try{
+          await this.$store.dispatch('addOrUpdateShopCart', {
+            skuId:this.$route.params.skuid,
+            skuNum:this.skuNum})
+          await sessionStorage.setItem("SKUINFO",JSON.stringify(this.skuInfo))
+          //进行路由跳转
+          await this.$router.push({name: "addcartsuccess", query: {skuNum: this.skuNum}})
+        }catch(error){} }
+  },
+    data(){ return { skuNum: 1} }
 }
 </script>
 

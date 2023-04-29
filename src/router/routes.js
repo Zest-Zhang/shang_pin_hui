@@ -3,6 +3,8 @@ import Search from "@/pages/Search/Search";
 import Login from "@/pages/Login/Login";
 import Register from "@/pages/Register/Register";
 import Detail from "@/pages/Detail/Detail";
+import AddCartSuccess from "@/pages/AddCartSuccess/AddCartSuccess"
+import ShopCart from '@/pages/ShopCart/ShopCart';
 
 export default [
     {
@@ -27,6 +29,17 @@ export default [
     {
         path: "/detail/:skuid",
         component: Detail
+    },
+    {
+        path:"/addcartsuccess",
+        name:"addcartsuccess",
+        component:AddCartSuccess,
+        meta:{show:true}
+    },
+    {
+        path:"/shopcart",
+        component:ShopCart,
+        meta:{show:true },
     },
     {
         path: '/',
