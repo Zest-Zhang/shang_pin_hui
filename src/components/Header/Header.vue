@@ -10,7 +10,10 @@
             <p>
               <span>请</span>
               <router-link to = '/login'>登录</router-link>
-              <router-link class="register" to = '/register'>免费注册</router-link>
+              <router-link
+                  class="register"
+                  to = '/register'
+              >免费注册</router-link>
             </p>
           </div>
           <div class="typeList">
@@ -55,16 +58,17 @@ export default {
   },
   methods: {
     goSearch() {
-      let loction = {
+      let location = {
         name: "search",
-        params: { keyword: this.keyword || undefined}
+        params: { keyword: this.keyword || undefined},
+        // query:{ k:this.keyword.toUpperCase() }
       };
       // 这行代码的作用是点击 TypeNav 再点击搜索按钮后，params 和 query 参数会合并在一起
       if (this.$route.query) {
         // undefined 的作用是允许搜索按钮搜索的内容为空，不加 undefined 搜索空内容会报错
-        loction.query = this.$route.query;
+        location.query = this.$route.query;
       }
-      this.$router.push(loction);
+      this.$router.push(location);
     }
   },
 }

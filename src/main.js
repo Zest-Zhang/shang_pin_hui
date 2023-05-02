@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from "@/router/router.js"
-import TypeNav from '@/components/TypeNav/TypeNav'
+import TypeNav from "@/components/TypeNav/TypeNav";
 import store from "@/store/store"
 import "@/mock/mockServe"
 import "swiper/css/swiper.css"
