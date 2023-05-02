@@ -10,7 +10,7 @@
             <div class="all-sort-list2" @click="goSearch">
               <div
                 class="item bo"
-                v-for="(c1, index) in categoryList"
+                v-for="(c1, index) in categoryList.slice(0,16)"
                 v-bind:key="c1.categoryId"
                 :class="{ cur: currentIndex == index }"
               >
