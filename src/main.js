@@ -7,6 +7,7 @@ import "@/mock/mockServe"
 import "swiper/css/swiper.css"
 import Carousel from '@/components/Carousel/Carousel'
 import Pagination from '@/components/Pagination/Pagination'
+import "@/plugins/validate";
 
 Vue.component(Carousel.name, Carousel)
 Vue.component(TypeNav.name,TypeNav)

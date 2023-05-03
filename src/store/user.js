@@ -1,18 +1,29 @@
-import {reqPostUserRegister} from "@/api/api";
+import {reqUserRegister,reqGetCode,} from "@/api/api";
 
 const state = {
-    searchList: {}
+    searchList: {},
+    code: '',
 }
 const mutations = {
     GETSEARCHLIST( state,searchList ){
         state.searchList = searchList
-    }
+    },
+    GETCODE(state, code) {
+        state.code = code;
+    },
 }
 const actions = {
+    // 获取验证码
+    async getCode({ commit }, phone) {
+        let result = await reqGetCode(phone);
+        if (result.code === 200) {
+            commit('GETCODE', result.data);
+        }
+    },
     // 用户注册的地方
     async userRegister({ commit }, obj) {
         // 注册接口没有返回 data,不需要提交 mutation
-        let result = await reqPostUserRegister(obj);
+        let result = await reqUserRegister(obj);
         if (result.code === 200) {
             //注册成功
             return 'ok';
