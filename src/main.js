@@ -10,6 +10,15 @@ import Pagination from '@/components/Pagination/Pagination'
 import "@/plugins/validate";
 import * as API from "@/api/api";
 import { Button, MessageBox } from "element-ui";
+// 引入图片懒加载
+import img from '@/components/Footer/images/wx_cz.jpg'
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload, {
+    preLoad: 1.3,
+    error: 'dist/error.png',
+    loading: img,
+    attempt: 1
+})
 
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
