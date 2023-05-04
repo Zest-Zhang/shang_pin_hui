@@ -44,7 +44,9 @@ export default {
       tradeMarkHandler(trademark){
         this.$emit('trademarkInfo',trademark)
       },
-      attrInfo(attr,attrValue){ this.$emit("attrInfo",attr,attrValue) },
+      attrInfo(attr,attrValue){
+        this.$emit("attrInfo",attr,attrValue)
+      },
 
     }
 }

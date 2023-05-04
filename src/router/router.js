@@ -42,7 +42,7 @@ router.beforeEach(async(to, from, next) => {
                     //清除token
                     await store.dispatch("logout");
                     // 回到登录页
-                    await this.$router.push("/login");
+                    this.$router.push("/login");
                 }
             }
         }

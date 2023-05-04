@@ -8,10 +8,16 @@ import "swiper/css/swiper.css"
 import Carousel from '@/components/Carousel/Carousel'
 import Pagination from '@/components/Pagination/Pagination'
 import "@/plugins/validate";
+import * as API from "@/api/api";
+import { Button, MessageBox } from "element-ui";
+
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
 
 Vue.component(Carousel.name, Carousel)
 Vue.component(TypeNav.name,TypeNav)
 Vue.component(Pagination.name,Pagination)
+Vue.component(Button.name, Button);
 
 Vue.config.productionTip = false
 
@@ -19,5 +25,8 @@ new Vue({
     render: h => h(App),
     router,
     store,
-    beforeCreate(){ Vue.prototype.$bus = this }
+    beforeCreate(){
+        Vue.prototype.$bus = this
+        Vue.prototype.$API = API
+    }
 }).$mount('#app')
