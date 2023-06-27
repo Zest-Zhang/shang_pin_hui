@@ -79,9 +79,9 @@ export default {
         const { phone, password } = this;
         await this.$store.dispatch('reqUserLogin', { phone, password });
         //登录的路由组件：看路由当中是否包含query参数，有：调到query参数指定路由，没有：调到home
-         let toPath = this.$route.query.redirect||"/home";
-         await this.$router.push(toPath);
-         
+        let toPath = this.$route.query.redirect||"/home";
+        this.$router.push(toPath);
+
       } catch (error) {
         console.log(error.message);
       }

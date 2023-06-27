@@ -10,7 +10,7 @@
             <p v-if="!userName">
               <span>请</span>
               <router-link to="/login">登录</router-link>
-              <router-link to="/Register" class="register">免费注册</router-link>
+              <router-link to="/register" class="register">免费注册</router-link>
             </p>
             <p v-else>
               <a>{{ userName }}</a>

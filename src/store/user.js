@@ -1,51 +1,27 @@
-import {reqUserRegister,reqGetCode,reqUserLogin,reqUserInfo,reqlogout,} from "@/api/api";
+import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo, reqlogout } from '@/api/api';
 import { setToken, getToken, removeToken } from '@/utils/token';
-
 const state = {
-    searchList: {},
     code: '',
     token: getToken(),
     userInfo: {},
-}
-const mutations = {
-    GETSEARCHLIST( state,searchList ){
-        state.searchList = searchList
-    },
-    GETCODE(state, code) {
-        state.code = code;
-    },
-    USERLOGIN(state, token) {
-        state.token = token;
-    },
-    USERINFO(state, userInfo) {
-        state.userInfo = userInfo;
-    },
-    CLEAR(state) {
-        //帮仓库中先关用户信息清空
-        state.userInfo = {};
-        state.token = '';
-        //本地存储数据清空
-        removeToken();
-    },
-}
+};
 const actions = {
-    // 获取验证码
+    //获取验证码
     async getCode({ commit }, phone) {
         let result = await reqGetCode(phone);
-        if (result.code === 200) {
+        // console.log(result);
+        if (result.code == 200) {
             commit('GETCODE', result.data);
         }
     },
-    // 用户注册的地方
-    async userRegister({ commit }, obj) {
-        // 注册接口没有返回 data,不需要提交 mutation
-        let result = await reqUserRegister(obj);
-        if (result.code === 200) {
-            //注册成功
+    //注册
+    async userRegister({ commit }, user) {
+        let result = await reqUserRegister(user);
+        // console.log(result);
+        if (result.code == 200) {
             return 'ok';
         } else {
-            //注册失败
-            return Promise.reject(new Error(result.message));
+            return Promise.reject(new Error('faile'));
         }
     },
     //登录业务
@@ -62,7 +38,6 @@ const actions = {
     //获取用户信息在首页展示【需要带着用户的token向服务器要用户信息】
     async getUserInfo({ commit }) {
         let result = await reqUserInfo();
-        // console.log(result);
         if (result.code == 200) {
             commit('USERINFO', result.data);
             return 'ok';
@@ -82,13 +57,29 @@ const actions = {
             return Promise.reject(new Error('falie'));
         }
     },
-}
-const getters = {
-    goodsList(state){
-        return state.searchList.goodsList || []
+};
+const mutations = {
+    GETCODE(state, code) {
+        state.code = code;
     },
-}
-
-export default{ state,mutations,actions,getters }
-
-
+    USERLOGIN(state, token) {
+        state.token = token;
+    },
+    USERINFO(state, userInfo) {
+        state.userInfo = userInfo;
+    },
+    CLEAR(state) {
+        //帮仓库中先关用户信息清空
+        state.userInfo = {};
+        state.token = '';
+        //本地存储数据清空
+        removeToken();
+    },
+};
+const getters = {};
+export default {
+    state,
+    actions,
+    mutations,
+    getters,
+};
