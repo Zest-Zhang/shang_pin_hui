@@ -3,11 +3,6 @@ import {reqGetCartList,reqDeleteCartById,reqUpdateCheckedById,} from '@/api/api'
 const state = {
     cartList: [],
 }
-const mutations = {
-    GETCARTLIST( state,cartList ){
-        state.cartList = cartList
-    }
-}
 const actions = {
     async getCartList({commit} ) {
         let result = await reqGetCartList();
@@ -43,12 +38,17 @@ const actions = {
         return Promise.all(PromiseAll);
 }
 }
+const mutations = {
+    GETCARTLIST( state,cartList ){
+        state.cartList = cartList
+    }
+}
 const getters = {
     cartList(state){
         return state.cartList[0] || {}
     },
 }
 
-export default {state,mutations,actions,getters}
+export default {state,actions,mutations,getters}
 
 

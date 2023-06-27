@@ -1,3 +1,4 @@
+
 <template>
   <div class="detail">
     <!-- 商品分类导航 -->

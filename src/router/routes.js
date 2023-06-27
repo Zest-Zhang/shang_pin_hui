@@ -54,6 +54,7 @@ export default [
             show: true,
         },
         // 路由独享守卫
+        // 目的：确保用户只能从/shopcart的路由跳转到当前路由，避免从其他路由跳转过来
         beforeEnter: (to, from, next) => {
             if (from.path == '/shopcart') {
                 next()

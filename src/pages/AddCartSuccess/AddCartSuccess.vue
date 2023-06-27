@@ -24,7 +24,8 @@
 <script>
   export default {
     name: 'AddCartSuccess',
-    //使用 JSON.parse 把字符串变成数据，再使用 computed 把数据简化并使用(这里没用到 vuex 里的 state，所以用 computed 代替存储数据)
+    //使用 JSON.parse 把字符串变成数据，再使用 computed 把数据简化并使用
+    // (这里没用到 vuex 里的 state，所以用 computed 代替存储数据)
     computed:{
       skuInfo(){
         return JSON.parse(sessionStorage.getItem('SKUINFO'))

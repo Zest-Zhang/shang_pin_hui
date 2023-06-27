@@ -11,7 +11,7 @@
               <div
                 class="item bo"
                 v-for="(c1, index) in categoryList.slice(0,16)"
-                v-bind:key="c1.categoryId"
+                :key="c1.categoryId"
                 :class="{ cur: currentIndex == index }"
               >
                 <h3 @mouseenter="changeIndex(index)">
@@ -81,7 +81,7 @@ export default {
   name: "TypeNav",
   data() {
     return {
-      //存储用户鼠标移上哪一个一级分类
+      // currentIndex：存储用户鼠标移上哪一个一级分类
       currentIndex: -1,
       show: true,
     };

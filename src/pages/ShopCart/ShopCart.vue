@@ -1,3 +1,4 @@
+
 <template>
   <div class="cart">
     <h4>全部商品</h4>
@@ -101,10 +102,10 @@ export default {
     this.getData();
   },
   computed: {
-    ...mapGetters(["carList"]),
+    ...mapGetters(["cartList"]),
     // 购物车数据
     cartInfoList() {
-      return this.carList.cartInfoList || [];
+      return this.cartList.cartInfoList || [];
     },
     // 计算购物车产品的总价
     totalPrice() {

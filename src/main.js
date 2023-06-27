@@ -14,9 +14,13 @@ import { Button, MessageBox } from "element-ui";
 import img from '@/components/Footer/images/wx_cz.jpg'
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload, {
+    // 预加载高度比例
     preLoad: 1.3,
+    // 路径错误时加载图片
     error: 'dist/error.png',
+    // 预加载图片
     loading: img,
+    // 尝试加载图片数量
     attempt: 1
 })
 

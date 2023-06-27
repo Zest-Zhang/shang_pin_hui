@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 商品分类三级列表 -->
     <TypeNav />
     <div class="main">
       <div class="py-container">
@@ -54,7 +53,7 @@
                     >综合<span
                       v-show="isOne"
                       class="iconfont"
-                      :class="{ 'icon-up1': isAcs, 'icon-DOWN': isDesc }"
+                      :class="{ 'icon-shangjiantou1': isAcs, 'icon-xiajiantou1': isDesc }"
                     ></span
                   ></a>
                 </li>
@@ -63,7 +62,7 @@
                     >价格<span
                       v-show="isTow"
                       class="iconfont"
-                      :class="{ 'icon-up1': isAcs, 'icon-DOWN': isDesc }"
+                      :class="{ 'icon-shangjiantou1': isAcs, 'icon-xiajiantou1': isDesc }"
                     ></span
                   ></a>
                 </li>
