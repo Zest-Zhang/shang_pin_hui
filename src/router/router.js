@@ -6,6 +6,8 @@ import store from "@/store/store";
 Vue.use(VueRouter)
 
 let router = new VueRouter({
+    // 去掉 # 号
+    mode:"history",
     // 配置路由
     routes,
     scrollBehavior() {
