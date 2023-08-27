@@ -1,0 +1,48 @@
+name: 打包应用并上传阿里云
+
+on:
+    # 代码作用：push 到 master 分支才触发工作流
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+        # 只有一个 job，运行在虚拟机环境 ubuntu-latest
+        runs-on: ubuntu-latest
+        steps:
+            - name: 迁出代码
+              # 使用action库  actions/checkout 获取源码
+              uses: actions/checkout@master
+
+            - name: 安装node.js
+              # 使用 action 库 actions/setup-node 安装 node
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 14.0.0
+
+            - name: 安装依赖
+              # 这里可以在服务端解决 bug，比如 run: npm i tailwindcss@3.6.1
+              run: npm install
+
+            # 打包生成 dist 目录
+            - name: 打包
+              run: npm run build
+
+            # 上传阿里云
+            - name: 发布到阿里云
+              uses: easingthemes/ssh-deploy@v2.1.1
+              env:
+                  # 私钥，在阿里云新建私钥 PRIVATE_KEY，然后在右边绑定密钥对给实例，复制私钥内容，在项目设置的 secrets 增加 PRIVATE_KEY，把复制的内容粘贴进去
+                  SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+                  # 复制到阿里云静态服务器的文件夹名称
+                  SOURCE: 'dist'
+                  # 需要隐藏主机就用这个：REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+                  # 在需要 ci/cd 的项目里设置的 secrets/actions 添加 REMOTE_HOST，内容为主机即可
+                  # 服务器主机
+                  REMOTE_HOST: '47.96.150.51'
+                  # 用户
+                  REMOTE_USER: 'root'
+                  # 打包后的 dist 文件夹将放在目标地址
+                  TARGET: '/www/wwwroot'
+

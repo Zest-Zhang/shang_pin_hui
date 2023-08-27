@@ -5,8 +5,8 @@ import "nprogress/nprogress.css"
 import store from "@/store/store";
 
 const requests = axios.create({
-    baseURL: "/api",
-    timeout: 5000,
+        baseURL: "/api",
+        timeout: 5000,
 })
 
 // 请求拦截器
