@@ -1,7 +1,7 @@
 # shangpinhuishop
 
-## 线上地址
-http://47.96.150.51（电脑访问）
+## 线上地址（电脑访问）
+http://47.96.150.51
 
 ## Build Setup
 
