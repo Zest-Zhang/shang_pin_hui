@@ -1,4 +1,8 @@
 # shangpinhuishop
+
+## 线上地址
+http://47.96.150.51（电脑访问）
+
 ## Build Setup
 
 ```bash
